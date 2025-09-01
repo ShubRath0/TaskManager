@@ -35,7 +35,6 @@ public class App {
                 default -> System.out.println("Invalid choice.");
             }
         }
-
     }
 
     // Prints every choice
@@ -120,7 +119,7 @@ public class App {
         System.out.println("Enter a name/description for the task.");
         String name = "";
 
-        while(name.isEmpty() || manager.checkName(name)) {
+        while (name.isEmpty() || manager.checkName(name)) {
             name = scnr.nextLine().trim();
             if (name.isEmpty()) {
                 System.out.println("Task name cannot be empty!");

@@ -32,6 +32,28 @@ public class TaskItem {
         }
     }
 
+        /**
+     * Creates a new task item with an name, due date, and completion status already set
+     * 
+     * @param name       - The name or description of the task
+     * @param dueDate    - The due date of the task in MM-dd-yyyy format
+     * @param completion - The completion status of the task
+     * @throws IllegalArgumentException if the due date is not MM-dd-yyyy format
+     */
+    public TaskItem(String name, String dueDate, boolean completion) throws IllegalArgumentException {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Task name cannot be empty.");
+        }
+        this.name = name;
+        this.completed = completion;
+
+        try {
+            this.dueDate = LocalDate.parse(dueDate, FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Due date must be in MM-dd-yyyy format.");
+        }
+    }
+
     /**
      * Gets the name or description of the task
      * 
@@ -71,7 +93,7 @@ public class TaskItem {
      * 
      * @return "Complete" or "Incomplete"
      */
-    public String getCompletionStatus() {
+    private String getCompletionStatus() {
         return completed ? "Complete" : "Incomplete";
     }
 

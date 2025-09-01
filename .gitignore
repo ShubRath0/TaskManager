@@ -6,3 +6,6 @@
 
 # Libraries
 /lib/
+
+# Database
+tasks.db

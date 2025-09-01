@@ -1,13 +1,12 @@
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Holds and manages all task items
+ * Holds and manages all TaskItem's
  */
 public class TaskManager {
 
-    private List<TaskItem> taskList = new ArrayList<>();
+    private List<TaskItem> taskList = TaskRepository.getAllTasks();
 
     /**
      * Adds a new task to TaskManager
@@ -21,6 +20,7 @@ public class TaskManager {
         if (checkName(task.getName())) {
             return false;
         } else {
+            TaskRepository.addTask(task);
             return taskList.add(task);
         }
     }
@@ -48,6 +48,7 @@ public class TaskManager {
      */
     public boolean removeTask(TaskItem task) {
         validateTask(task);
+        TaskRepository.removeTask(task);
         return taskList.remove(task);
     }
 
@@ -64,6 +65,8 @@ public class TaskManager {
             return false;
         }
         task.complete();
+        TaskRepository.updateTask(task);
+        
         return true;
     }
 
