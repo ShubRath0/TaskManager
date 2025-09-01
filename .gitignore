@@ -1,0 +1,8 @@
+# Compiled class files
+/bin/**/*.class
+
+# VS Code settings folder
+.vscode/
+
+# Libraries
+/lib/
