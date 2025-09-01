@@ -1,3 +1,4 @@
+package com.example;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -7,10 +8,14 @@ import java.time.format.DateTimeParseException;
  */
 public class TaskItem {
 
-    private final String name;
-    private final LocalDate dueDate;
+    private String name;
+    private String dueDate;
     private boolean completed = false;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+
+    public TaskItem(){
+
+    }
 
     /**
      * Creates a new task item with a name and due date
@@ -26,7 +31,8 @@ public class TaskItem {
         this.name = name;
 
         try {
-            this.dueDate = LocalDate.parse(dueDate, FORMATTER);
+            LocalDate.parse(dueDate, FORMATTER);
+            this.dueDate = dueDate;
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Due date must be in MM-dd-yyyy format.");
         }
@@ -48,7 +54,8 @@ public class TaskItem {
         this.completed = completion;
 
         try {
-            this.dueDate = LocalDate.parse(dueDate, FORMATTER);
+            LocalDate.parse(dueDate, FORMATTER);
+            this.dueDate = dueDate;
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Due date must be in MM-dd-yyyy format.");
         }
@@ -69,7 +76,7 @@ public class TaskItem {
      * @return the due date of the task
      */
     public String getDueDate() {
-        return dueDate.format(FORMATTER);
+        return dueDate;
     }
 
     /**

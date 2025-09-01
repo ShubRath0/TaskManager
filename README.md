@@ -1,6 +1,6 @@
 # Task Manager App
 
-A simple console-based Task Manager in Java.  
+A simple console-based Task Manager in Java with REST API support.  
 This application allows users to create, view, complete, and remove tasks with due dates, and now stores tasks persistently using SQLite.
 
 ## Features
@@ -12,35 +12,68 @@ This application allows users to create, view, complete, and remove tasks with d
 - Remove tasks from the list.
 - Input validation for numbers, dates, and task names.
 - Persistent storage using SQLite (tasks.db) so tasks are saved between sessions.
+- **REST API** support to manage tasks programmatically:
+- `GET /tasks` — list all tasks (no body required)  
+- `POST /tasks` — add a new task  
+  **Request body (JSON):** Provide `name` and `dueDate`. You can optionally include `completed`. Example:
+   ```json
+   {
+   "name": "Finish Homework",
+   "dueDate": "09-02-2025",
+   "completed": false
+   }
+   ```
+
+  - `PUT /tasks` — Update an existing task by name  
+   **Description:** Specify the name of the task and include any fields (dueDate or completed) you want to update. Example:
+   ```json
+   {
+      "name": "Finish Homework",
+      "dueDate": "09-02-2025",
+      "completed": false
+   }
+   ```
+
+- `DELETE /tasks` — remove a task
+   **Request body (JSON):** Just provide the name of the task to delete. Example:
+   ```json
+   {
+      "name": "Finish Homework"
+   }
+   ```
 
 ## Requirements
 
 - Java 8 or higher
-- Terminal/Command Prompt to run the application
+- Maven 3 or higher
+- Terminal/Command Prompt to run the console version
+- HTTP client (browser, Postman, curl, etc.) for API interaction
 
 ## How to Run
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/ShubRath0/Task-Manager-App.git
+   git clone https://github.com/ShubRath0/TaskManager.git
    ```
 
-2. The required SQLite JDBC library (sqlite-jdbc.jar) is already included in the /lib folder, so you don’t need to download anything extra.
-
-3. Compile the project:
+2. Build the project with Maven
 
    ```bash
-   javac -cp "lib/*" -d bin src/*.java
+   mvn clean compile
    ```
 
-4. Run the application:
+3. Run the console application (this also starts the REST API server):
+
    ```bash
-   java -cp "bin;lib/*" App
+   mvn exec:java "-Dexec.mainClass=com.example.App"
    ```
+
+4. Access the API at http://localhost:4567 and use endpoints to manage tasks
 
 ## Why this project is cool
 
 - Uses SQLite for persistent storage
 - Implements a clean separation of concerns (TaskItem, TaskRepository, TaskManager)
 - Logging with Logger class
+- Now supports programmatic task management via REST API

@@ -4,8 +4,11 @@
 # VS Code settings folder
 .vscode/
 
-# Libraries
+# Library
 /lib/
 
 # Database
 tasks.db
+
+# Maven target folder
+/target

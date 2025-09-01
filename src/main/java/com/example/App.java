@@ -1,3 +1,5 @@
+package com.example;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -21,7 +23,11 @@ public class App {
 
     // entry point
     public static void main(String[] args) {
+        new ApiServer();
+        run();
+    }
 
+    private static void run() {
         while (running) {
             printMenu();
             int choice = readInt("Choose an option.");

@@ -1,3 +1,4 @@
+package com.example;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,33 @@ public class TaskRepository {
         int rows = executeUpdate(SQL, task.isCompleted(), task.getName());
         Logger.info(rows + " task(s) updated from database.");
         return rows;
+    }
+
+    /**
+     * Checks if a task exists in the database
+     * 
+     * @param task The TaskItem to check
+     * @return true if it exists, else false
+     */
+    public static boolean containsTask(TaskItem task) {
+        String SQL = "SELECT COUNT(*) FROM tasks WHERE name = ?";
+
+        try (Connection conn = getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+            pstmt.setString(1, task.getName());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1);
+                    return count > 0;
+                }
+            }
+
+        } catch (SQLException e) {
+            Logger.error("Failed to check if task exists: " + task.getName(), e);
+        }
+
+        return false;
     }
 
     /**
