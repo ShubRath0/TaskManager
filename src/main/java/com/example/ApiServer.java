@@ -30,6 +30,7 @@ public class ApiServer {
         // GET all tasks
         get("/tasks", (req, res) -> {
             res.type("application/json");
+
             try {
                 List<TaskItem> tasks = TaskRepository.getAllTasks();
                 res.status(200);
@@ -43,6 +44,7 @@ public class ApiServer {
         // POST a new task
         post("/tasks", (req, res) -> {
             res.type("application/json");
+
             try {
                 TaskItem task = gson.fromJson(req.body(), TaskItem.class);
 
@@ -56,7 +58,9 @@ public class ApiServer {
                 }
 
                 Logger.info("POST Body: " + req.body());
-                TaskRepository.addTask(task);
+
+                App.manager.addTask(task);
+
                 res.status(201);
                 return gson.toJson(task);
             } catch (Exception e) {
@@ -77,7 +81,9 @@ public class ApiServer {
                 }
 
                 Logger.info("POST Body: " + req.body());
-                TaskRepository.updateTask(task);
+
+                App.manager.updateTask(task);
+
                 res.status(200);
                 return gson.toJson(task);
             } catch (Exception e) {
@@ -98,7 +104,9 @@ public class ApiServer {
                 }
 
                 Logger.info("POST Body: " + req.body());
-                TaskRepository.removeTask(task);
+                
+                App.manager.removeTask(task);
+
                 res.status(200);
                 return gson.toJson(task);
             } catch (Exception e) {

@@ -1,7 +1,7 @@
 # Task Manager App
 
 A simple console-based Task Manager in Java with REST API support.  
-This application allows users to create, view, complete, and remove tasks with due dates, and now stores tasks persistently using SQLite.
+This application allows users to create, view, complete, and remove tasks with due dates, stores tasks persistently using SQLite, and now implements Unit Testing.
 
 ## Features
 
@@ -12,6 +12,7 @@ This application allows users to create, view, complete, and remove tasks with d
 - Remove tasks from the list.
 - Input validation for numbers, dates, and task names.
 - Persistent storage using SQLite (tasks.db) so tasks are saved between sessions.
+- Unit Testing for TaskManager + TaskRepository
 - **REST API** support to manage tasks programmatically:
 - `GET /tasks` — list all tasks (no body required)  
 - `POST /tasks` — add a new task  
@@ -71,9 +72,18 @@ This application allows users to create, view, complete, and remove tasks with d
 
 4. Access the API at http://localhost:4567 and use endpoints to manage tasks
 
+## Running Tests
+
+Run all unit tests with Maven:
+
+```bash
+mvn test
+```
+
 ## Why this project is cool
 
 - Uses SQLite for persistent storage
 - Implements a clean separation of concerns (TaskItem, TaskRepository, TaskManager)
 - Logging with Logger class
 - Now supports programmatic task management via REST API
+- Implements Unit Testing

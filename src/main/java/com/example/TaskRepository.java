@@ -1,4 +1,5 @@
 package com.example;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,26 +17,29 @@ import java.util.List;
  * This class uses SQLite via JDBC and handles connections automatically
  */
 public class TaskRepository {
-    private static final String url = "jdbc:sqlite:tasks.db";
+    private static String databaseUrl = "jdbc:sqlite:tasks.db";
 
-    static {
-        try {
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "name TEXT NOT NULL," +
-                    "dueDate TEXT," +
-                    "completed INTEGER DEFAULT 0" +
-                    ")";
-            try (Connection conn = DriverManager.getConnection(url); Statement stmt = conn.createStatement()) {
-                stmt.execute(createTableSQL);
-                Logger.info("Table 'tasks' ensured in database.");
-            }
+    private TaskRepository() {
+    }
+
+    private static void ensureTableExists() {
+        String createTableSQL = "CREATE TABLE IF NOT EXISTS tasks (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "name TEXT NOT NULL," +
+                "dueDate TEXT," +
+                "completed INTEGER DEFAULT 0" +
+                ")";
+        try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
+            stmt.execute(createTableSQL);
+            Logger.info("Table 'tasks' ensured in database.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private TaskRepository() {
+    public static void setDatabase(String url) {
+        databaseUrl = url;
+        ensureTableExists();
     }
 
     /**
@@ -123,7 +127,7 @@ public class TaskRepository {
      * @throws SQLException
      */
     private static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url);
+        return DriverManager.getConnection(databaseUrl);
     }
 
     /**
@@ -182,6 +186,27 @@ public class TaskRepository {
         }
 
         return tasks;
+    }
+
+    public static TaskItem getTaskByName(String name){
+        String SQL = "SELECT * FROM tasks WHERE name = ?";
+        try (Connection conn = getConnection(); PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+            pstmt.setString(1, name);
+
+            try(ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new TaskItem(
+                        rs.getString("name"),
+                        rs.getString("dueDate"),
+                        rs.getInt("completed") == 1
+                    );
+                }
+            } 
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

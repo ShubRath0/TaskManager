@@ -101,7 +101,7 @@ public class TaskItem {
      * @return "Complete" or "Incomplete"
      */
     private String getCompletionStatus() {
-        return completed ? "Complete" : "Incomplete";
+        return completed ? "Y" : "N";
     }
 
     /**

@@ -1,4 +1,5 @@
 package com.example;
+
 import java.util.List;
 import java.util.Collections;
 
@@ -49,8 +50,18 @@ public class TaskManager {
      */
     public boolean removeTask(TaskItem task) {
         validateTask(task);
+
+        // Remove from repository
         TaskRepository.removeTask(task);
-        return taskList.remove(task);
+
+        // Remove from taskList by matching name
+        for (int i = 0; i < taskList.size(); i++) {
+            if (taskList.get(i).getName().equalsIgnoreCase(task.getName())) {
+                taskList.remove(i);
+                return true;
+            }
+        }
+        return false; // task not found
     }
 
     /**
@@ -62,13 +73,31 @@ public class TaskManager {
      */
     public boolean completeTask(TaskItem task) {
         validateTask(task);
-        if (!taskList.contains(task) || task.isCompleted()) {
+        if (!taskList.contains(task)) {
+            Logger.warn("Task not found in tasklist");
+            return false;
+        }
+
+        if (task.isCompleted()) {
+            Logger.warn("Task is already completed");
             return false;
         }
         task.complete();
         TaskRepository.updateTask(task);
-        
+
         return true;
+    }
+
+    public void updateTask(TaskItem task) {
+        for (TaskItem t : taskList) {
+            if (t.getName().equalsIgnoreCase(task.getName())) {
+                if (task.isCompleted()) {
+                    t.complete();
+                }
+                TaskRepository.updateTask(task);
+                return;
+            }
+        }
     }
 
     /**

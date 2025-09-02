@@ -10,7 +10,7 @@ public class App {
 
     // UTILITY
     private static final Scanner scnr = new Scanner(System.in);
-    private static final TaskManager manager = new TaskManager();
+    public static final TaskManager manager = new TaskManager();
 
     // VARIABLES
     private static boolean running = true;
@@ -23,6 +23,7 @@ public class App {
 
     // entry point
     public static void main(String[] args) {
+        TaskRepository.setDatabase("jdbc:sqlite:tasks.db");
         new ApiServer();
         run();
     }
@@ -172,8 +173,7 @@ public class App {
         if (task == null)
             return;
 
-        System.out
-                .println((manager.completeTask(task)) ? "Task completed successfully" : "Task could not be completed.");
+        System.out.println((manager.completeTask(task)) ? "Task completed successfully" : "Task could not be completed.");
     }
 
     // End the program
